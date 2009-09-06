@@ -32,7 +32,7 @@ class Post(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField(max_length=200)
     tags = TagField(blank=True)
-    body = models.TextField(blank=True)
+    body = models.TextField(blank=True, help_text='Format with <a href="http://en.wikipedia.org/wiki/Markdown" target="_blank">markdown</a>')
     publish_date = models.DateTimeField(blank=True, null=True)
     status = models.CharField(max_length=100, choices=STATUS_CHOICES)
     summary = models.TextField(blank=True)
