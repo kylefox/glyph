@@ -5,8 +5,6 @@ from django.utils.safestring import mark_safe
 from django.template.defaultfilters import truncatewords_html
 from tagging.fields import TagField
 from tagging.models import Tag
-from textile import textile
-from typogrify.templatetags.typogrify import typogrify
 
 class PostManager(models.Manager):
     
@@ -78,11 +76,6 @@ class Post(models.Model):
             })
         else:
             return ('blog.draft_post', (), {'post_id': self.id})
-            
-    @property
-    def content(self):
-        return self.body
-        # return mark_safe(typogrify(textile(self.body)))
         
     def tag_set(self):
         return Tag.objects.get_for_object(self)
