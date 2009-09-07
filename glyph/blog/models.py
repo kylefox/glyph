@@ -79,3 +79,7 @@ class Post(models.Model):
         
     def tag_set(self):
         return Tag.objects.get_for_object(self)
+
+    def approved_comments(self):
+        from comments.models import Comment
+        return Comment.objects.approved_for_object(self)

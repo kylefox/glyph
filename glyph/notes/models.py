@@ -3,8 +3,6 @@ from django.db import models
 from django.utils.safestring import mark_safe
 from django.template.defaultfilters import striptags, truncatewords, timesince
 from tagging.fields import TagField
-from markdown import markdown
-from typogrify.templatetags.typogrify import typogrify
 
 class Note(models.Model):
     
@@ -20,11 +18,7 @@ class Note(models.Model):
         unique_together = (('publish_date', 'slug'),)
     
     def __unicode__(self):
-        return self.title or truncatewords(striptags(self.content), 15)
-    
-    @property
-    def content(self):
-        return mark_safe(typogrify(markdown(self.body)))
+        return self.title or truncatewords(self.body, 15)
         
     def permalink(self, text=None):
         if text is None:
@@ -42,3 +36,7 @@ class Note(models.Model):
             'day': self.publish_date.strftime('%d'),
             'slug': self.slug
         })
+
+    def approved_comments(self):
+        from comments.models import Comment
+        return Comment.objects.approved_for_object(self)
