@@ -80,6 +80,22 @@ class Post(models.Model):
     def tag_set(self):
         return Tag.objects.get_for_object(self)
 
+    def next_post(self):
+        try:
+            return Post.objects.published().filter(
+                    publish_date__gte=self.publish_date
+                ).exclude(pk=self.pk).order_by('publish_date')[0]
+        except:
+            return None
+
+    def previous_post(self):
+        try:
+            return Post.objects.published().filter(
+                    publish_date__lte=self.publish_date
+                ).exclude(pk=self.pk)[0]
+        except:
+            return None
+
     def approved_comments(self):
         from comments.models import Comment
         return Comment.objects.approved_for_object(self)
