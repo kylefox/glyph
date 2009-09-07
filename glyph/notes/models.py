@@ -2,7 +2,11 @@ from datetime import datetime
 from django.db import models
 from django.utils.safestring import mark_safe
 from django.template.defaultfilters import striptags, truncatewords, timesince
+from django.core.urlresolvers import reverse
+
 from tagging.fields import TagField
+
+from glyph.utils.pinger import send_pings
 
 class Note(models.Model):
     
@@ -19,6 +23,10 @@ class Note(models.Model):
     
     def __unicode__(self):
         return self.title or truncatewords(self.body, 15)
+        
+    def save(self, *args, **kwargs):
+        send_pings(self, reverse("feeds.notes"))
+        return super(Note, self).save(*args, **kwargs)
         
     def permalink(self, text=None):
         if text is None:

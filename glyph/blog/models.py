@@ -3,8 +3,12 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
 from django.template.defaultfilters import truncatewords_html
+from django.core.urlresolvers import reverse
+
 from tagging.fields import TagField
 from tagging.models import Tag
+
+from glyph.utils.pinger import send_pings
 
 class PostManager(models.Manager):
     
@@ -47,6 +51,8 @@ class Post(models.Model):
         
     def save(self, *args, **kwargs):
         self.modified_at = datetime.now()
+        if self.status == Post.PUBLISHED:
+            send_pings(self, reverse("feeds.blog"))
         return super(Post, self).save(*args, **kwargs)
         
     def permalink(self, text=None, title=None):
