@@ -5,6 +5,7 @@ import urllib2
 from threading import Thread
 from django.contrib.sitemaps import ping_google
 from django.contrib.sites.models import Site
+from django.conf import settings
 from tagging.models import Tag
 
 PING_SERVICES = [
@@ -35,6 +36,10 @@ def send_pings(obj, feed_url):
     t.run()
 
 def send_pings_for_object(obj, feed_url=None):
+    
+    if settings.DEBUG:
+        print '[DEBUG]: Sending pings for %s' % obj
+        return False
     
     result = {}
     
