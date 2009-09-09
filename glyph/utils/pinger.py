@@ -38,7 +38,7 @@ def send_pings(obj, feed_url):
 def send_pings_for_object(obj, feed_url=None):
     
     if settings.DEBUG:
-        print '[DEBUG]: Sending pings for %s' % obj
+        #print '[DEBUG]: Sending pings for %s' % obj
         return False
     
     result = {}
@@ -81,7 +81,7 @@ def send_pings_for_object(obj, feed_url=None):
         except Exception, e:
             reply = 'Pinging %s failed (%s)' % (url, e.message)
             ping_fails += 1
-        print reply
+        #print reply
         
     result.update({'blogs': 'Blog pings: %s succeeded, %s failed.' % (ping_success, ping_fails)})
     
