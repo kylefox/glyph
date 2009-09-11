@@ -5,6 +5,7 @@ from django.template.defaultfilters import striptags, truncatewords, timesince
 from django.core.urlresolvers import reverse
 
 from tagging.fields import TagField
+from tagging.models import Tag
 
 from glyph.utils.pinger import send_pings
 
@@ -44,6 +45,9 @@ class Note(models.Model):
             'day': self.publish_date.strftime('%d'),
             'slug': self.slug
         })
+
+    def tag_set(self):
+        return Tag.objects.get_for_object(self)
 
     def approved_comments(self):
         from comments.models import Comment
