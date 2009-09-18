@@ -14,7 +14,7 @@ class NoteAdmin(admin.ModelAdmin):
     get_content.allow_tags = True
     get_content.short_description = "Note"
     
-    list_display = ('publish_date', 'title', 'body', 'admin_link')
+    list_display = ('title', 'tags', 'publish_date', 'admin_link')
     list_filter = ('publish_date',)
     search_fields = ('tags', 'title', 'body')
     prepopulated_fields = {"slug": ("body",)}
